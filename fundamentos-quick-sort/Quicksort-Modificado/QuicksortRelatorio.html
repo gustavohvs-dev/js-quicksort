@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quicksort - Modificado (relatório)</title>
+  </head>
+  <body>
+    <script>
+      //Configurações
+      let tamanhosDistintosDeElementos = [1000, 10000, 20000, 50000, 100000];
+      let quantidadeDeTestes = 100;
+
+      //Parâmetros
+      let performanceTemporaria = 0;
+      let comparacoesTemporaria = 0;
+      let comparacoes;
+      let timestampInicial = new Date().getTime();
+      let timestampFinal = new Date().getTime();
+      let tamanhoDeArray;
+      let arrayTemporario;
+      let arr;
+      let swapTemp = 0;
+      let swapCount = 0;
+
+      function insertionSort(arr, low, high) {
+        for (let i = low + 1; i <= high; i++) {
+          for (let j = i - 1; j >= low; j--) {
+            if (arr[j] > arr[j + 1]) {
+              // Swarrp
+              comparacoes++;
+              let temp = arr[j];
+              arr[j] = arr[j + 1];
+              arr[j + 1] = temp;
+              swapCount++;
+            } else {
+              comparacoes++;
+              break;
+            }
+          }
+        }
+      }
+
+      function partition(arr, low, high) {
+        let pivot = arr[high];
+        let i = low;
+        let j = low;
+
+        while (i <= high) {
+          if (arr[i] > pivot) {
+            comparacoes++;
+            i++;
+          } else {
+            comparacoes++;
+            let temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+            swapCount++;
+            i++;
+            j++;
+          }
+        }
+        return j - 1;
+      }
+
+      function quickSortModified(arr, low, high) {
+        while (low < high) {
+          // Check if array size on which we will be working is less than 10
+          if (high - low < 10) {
+            comparacoes++;
+            insertionSort(arr, low, high);
+            break;
+          } else {
+            comparacoes++;
+
+            let pivot = partition(arr, low, high);
+
+            // We will do recursion on small size
+            // subarray So we can check pivot - low  and
+            // pivot - high
+
+            if (pivot - low < pivot - high) {
+              comparacoes++;
+
+              quickSortModified(arr, low, pivot - 1);
+              low = pivot + 1;
+            } else {
+              comparacoes++;
+
+              quickSortModified(arr, pivot + 1, high);
+              high = pivot - 1;
+            }
+          }
+        }
+      }
+
+      //Exibir array na tela
+      function printArray(arr, size) {
+        for (let i = 0; i < size; i++) document.write(arr[i] + " ");
+
+        document.write("<br><br>");
+      }
+
+      //Gerando número aleatório
+      function randomNumber() {
+        let randomNumber;
+        randomNumber = Math.floor(Math.random() * 100000000) + 1;
+        return randomNumber;
+      }
+
+      //Rodando o código
+      document.write(
+        "Esse algoritmo realiza uma bateria de testes conforme as configurações definidas<br><br>"
+      );
+      document.write("<b>Quicksort modificado - Testes realizados</b><br><br>");
+
+      for (let i = 0; i < tamanhosDistintosDeElementos.length; i++) {
+        for (let j = 0; j < quantidadeDeTestes; j++) {
+          comparacoes = 0;
+          swapCount = 0;
+          tamanhoDeArray = tamanhosDistintosDeElementos[i];
+          arr = [];
+          for (let k = 0; k < tamanhoDeArray; k++) {
+            tempRandomNumber = randomNumber();
+            arr.push(tempRandomNumber);
+          }
+          // array constante
+          //   arr = [
+          //     24, 97, 40, 67, 88, 85, 15, 66, 53, 44, 26, 48, 16, 52, 45, 23, 90,
+          //     18, 49, 80,
+          //   ];
+          // array inverso
+          // arr = [
+          //     20, 19, 18, 17, 16, 15, 14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2,
+          //     1,
+          //   ];
+          timestampInicial = new Date().getTime();
+          quickSortModified(arr, 0, arr.length - 1);
+          timestampFinal = new Date().getTime();
+          performanceTemporaria += timestampFinal - timestampInicial;
+          comparacoesTemporaria += comparacoes;
+          swapTemp += swapCount;
+          //Exibir vetor organizado
+          //   document.write("Array organizado: <br>");
+          //   printArray(arr, arr.length);
+        }
+        document.write(
+          "Quantidade de elementos no vetor: " +
+            tamanhosDistintosDeElementos[i] +
+            "<br>"
+        );
+        document.write(
+          "Quantidade de testes realizados: " + quantidadeDeTestes + "<br>"
+        );
+        document.write(
+          "Média do tempo de execução para cada teste (milisegundos): " +
+            performanceTemporaria / quantidadeDeTestes +
+            "<br>"
+        );
+        document.write(
+          "Média de comparações realizadas para cada teste: " +
+            comparacoesTemporaria / quantidadeDeTestes +
+            "<br>"
+        );
+        document.write(
+          "Média de trocas realizadas para cada teste: " +
+            swapTemp / quantidadeDeTestes +
+            "<br>"
+        );
+        document.write("<br>");
+        perfomanceTemporaria = 0;
+        comparacoesTemporaria = 0;
+        swapTemp = 0;
+      }
+      document.write(
+        "Observação: O tempo de execução é contabilizado apenas no Quicksort, ignorando o tempo de geração de números aleatórios."
+      );
+
+      // This code is contributed by Saurabh Jaiswal
+    </script>
+  </body>
+</html>

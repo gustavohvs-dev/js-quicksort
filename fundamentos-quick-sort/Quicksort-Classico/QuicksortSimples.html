@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quicksort - Clássico (básico)</title>
+</head>
+<body>
+    <script>
+        let comparacoes = 0
+        
+        // Javascript implementation of QuickSort 
+        // A utility function to swap two elements
+        function swap(arr, i, j) {
+            let temp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = temp;
+        }
+        
+        /* This function takes last element as pivot, places
+        the pivot element at its correct position in sorted
+        array, and places all smaller (smaller than pivot)
+        to left of pivot and all greater elements to right
+        of pivot */
+        function partition(arr, low, high) {
+        
+            // pivot
+            let pivot = arr[high];
+        
+            // Index of smaller element and
+            // indicates the right position
+            // of pivot found so far
+            let i = (low - 1);
+        
+            for (let j = low; j <= high - 1; j++) {
+        
+                // If current element is smaller 
+                // than the pivot
+                if (arr[j] < pivot) {
+        
+                    comparacoes++;
+                    // Increment index of 
+                    // smaller element
+                    i++;
+                    swap(arr, i, j);
+                }
+            }
+            swap(arr, i + 1, high);
+            return (i + 1);
+        }
+        
+        function quickSort(arr, low, high) {
+            if (low < high) {
+        
+                comparacoes++;
+                // pi is partitioning index, arr[p]
+                // is now at right place 
+                let pi = partition(arr, low, high);
+        
+                // Separately sort elements before
+                // partition and after partition
+                quickSort(arr, low, pi - 1);
+                quickSort(arr, pi + 1, high);
+            }
+        }
+        
+        //Exibir array na tela 
+        function printArray(arr, size) {
+            for (let i = 0; i < size; i++)
+                document.write(arr[i] + " ");
+        
+            document.write("<br><br>");
+        }
+        
+        //Gerando número aleatório
+        function randomNumber(){
+            let randomNumber;
+            randomNumber = Math.floor(Math.random() * 100000000) + 1;
+            return randomNumber;
+        }
+        
+        //Gerando elemetos de array e populando array randômica
+        let tamanhoDeArray = 100000
+        let arr = []
+        for(let i = 0; i < tamanhoDeArray; i++){
+            tempRandomNumber = randomNumber();
+            arr.push(tempRandomNumber);
+        }
+        let n = arr.length;
+        
+        timestampInicial = new Date().getTime();
+        quickSort(arr, 0, n - 1);
+        timestampFinal = new Date().getTime();
+
+        //Retire o comentário abaixo para exibir o array organizado
+        document.write("Array organizado: <br>");
+        printArray(arr, n);
+        document.write("<br>");
+
+        document.write("Comparações: ");
+        document.write(comparacoes);
+        document.write("<br>");
+        document.write("Timestamp inicial: ");
+        document.write(timestampInicial);
+        document.write("<br>");
+        document.write("Timestamp final: ");
+        document.write(timestampFinal);
+        document.write("<br>");
+
+        let tempoDeExecucao = timestampFinal - timestampInicial;
+        document.write("Tempo de execução em milisegundos: ");
+        document.write(tempoDeExecucao);
+        document.write("<br><br>");
+        
+        document.write("Observação: O tempo de execução é contabilizado apenas no Quicksort, ignorando o tempo de geração de números aleatórios.");
+        
+        
+        // This code is contributed by Saurabh Jaiswal
+    </script>
+</body>
+</html>
